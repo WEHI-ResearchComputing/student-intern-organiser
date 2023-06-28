@@ -412,6 +412,10 @@ def change_project():
     # Redirect back to the index page
     return redirect('/')
 
+@app.route('/test')
+def test():
+
+    return render_template('test.html')
 
 @app.route('/change_status', methods=['POST'])
 def change_status():

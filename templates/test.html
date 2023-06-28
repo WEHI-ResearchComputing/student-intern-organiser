@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Droppable - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  .draggable { width: 100px; height: 50px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
+  .droppable { width: 150px; height: 450px; padding: 0.5em; float: left; margin: 10px; }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( ".draggable" ).draggable();
+    $( ".droppable" ).droppable({
+      drop: function( event, ui ) {
+        $( this )
+          .addClass( "ui-state-highlight" );
+      }
+    });
+  } );
+  </script>
+</head>
+<body>
+
+<div id="emma_smith" class="draggable ui-widget-content">
+  <p>Emma_Smith</p>
+</div>
+<div id="liam_johnson" class="draggable ui-widget-content">
+  <p>Liam_Johnson</p>
+</div>
+<div id="olivia_brown" class="draggable ui-widget-content">
+  <p>Olivia_Brown</p>
+</div>
+<div id="noah_davis" class="draggable ui-widget-content">
+  <p>Noah_Davis</p>
+</div>
+<div id="ava_miller" class="draggable ui-widget-content">
+  <p>Ava_Miller</p>
+</div>
+
+
+
+<div id="BioNix_DE" class="droppable ui-widget-header">
+  <p>Drop here for BioNix Data Engineer</p>
+</div>
+<div id="Quantum_Computing_TR" class="droppable ui-widget-header">
+  <p>Drop here for Quantum Computing Translator</p>
+</div>
+<div id="Capacity_Building_WD" class="droppable ui-widget-header">
+  <p>Drop here for Capacity Building Web Developer</p>
+</div>
+<div id="Imaging_DE" class="droppable ui-widget-header">
+  <p>Drop here for Imaging Data Engineer</p>
+</div>
+
+ 
+</body>
+</html>
