@@ -74,24 +74,31 @@ def email_intake(intake_id):
     return render_template('email_intake.html', intake=intake, science_student_emails=science_student_emails, engit_student_emails=engit_student_emails, table_rows= table_rows)
 \
 
-def get_empty_email_users():
+def get_empty_users(condition):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM students WHERE wehi_email IS NULL")
-    empty_email_users = cursor.fetchall()
+    query = f"SELECT * FROM students WHERE {condition} IS NULL"
+    cursor.execute(query)
+    users = cursor.fetchall()
     conn.close()
-    return empty_email_users
+    return users
 
 
 @app.route('/links/', methods=['GET'])
 def links():
-    empty_email_users = get_empty_email_users()
+    empty_email_users = get_empty_users('wehi_email')
 
     return render_template('links.html', empty_email_users=empty_email_users)
 
+# @app.route('/import_profile', methods=['GET'])
+# def profile():
+#     empty_email_users = get_empty_users('profile')
+
+#   return render_template('import_profile.html', empty_email_users=empty_email_users)
+
 @app.route('/download_empty_emails')
 def download_empty_emails():
-    empty_email_users = get_empty_email_users()
+    empty_email_users = get_empty_users('wehi_email')
     selected_columns = [ (user[0], user[1], user[4]) for user in empty_email_users ]
     si = io.StringIO()
     cw = csv.writer(si)
@@ -107,6 +114,23 @@ def download_empty_emails():
         headers={"Content-disposition":
                  "attachment; filename=empty_email_users.csv"})
 
+# @app.route('/download_empty_profile')
+# def download_empty_profile():
+#     empty_email_users = get_empty_users('profile')
+#     selected_columns = [ (user[0], user[1], user[4]) for user in empty_email_users ]
+#     si = io.StringIO()
+#     cw = csv.writer(si)
+#     cw.writerow(['User ID', 'Name', 'Email'])
+#     cw.writerows(selected_columns)
+
+#     output = si.getvalue()
+#     si.close()
+
+#     return Response(
+#         output,
+#         mimetype="text/csv",
+#         headers={"Content-disposition":
+#                  "attachment; filename=empty_email_users.csv"})
 
 
 # Allocating students projects
@@ -1407,6 +1431,12 @@ def links_empty():
     conn.close()
     print(empty_email_users)
     return render_template('links.html', empty_email_users=empty_email_users)
+
+
+@app.errorhandler(Exception)
+def handle_error(e):
+    error_message = str(e) or "Unknown error occurred"
+    return render_template('error.html', error_message=error_message), 500
 
 
 if __name__ == '__main__':
